@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HotelManagerMVC.Data;
 using HotelManagerMVC.Data.Models;
+using HotelManagerMVC.Models;
+using System.Runtime.ConstrainedExecution;
 
 namespace HotelManagerMVC.Controllers
 {
@@ -22,9 +24,9 @@ namespace HotelManagerMVC.Controllers
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-              return _context.Reservations != null ? 
-                          View(await _context.Reservations.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Reservations'  is null.");
+            var applicationDbContext = _context.Reservations.Include(r => r.Room).Include(r => r.Clients);
+            return View(await applicationDbContext.ToListAsync());
+
         }
 
         // GET: Reservations/Details/5
@@ -159,5 +161,51 @@ namespace HotelManagerMVC.Controllers
         {
           return (_context.Reservations?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        public IActionResult Search()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Search(PeriodViewModel period)
+        {
+            List<Room> rooms = new List<Room>();
+            rooms=_context.Rooms.ToList();
+            var roomsAvailable = new List<Room>();
+
+            foreach (var room in rooms)
+            {
+                bool available = true;
+                foreach (var reserve in room.Reservations)
+                {
+                    if (reserve.AccommodationDate>=period.AccommodationDate && reserve.AccommodationDate<=period.ReleaseDate)
+                    {
+                        available= false;
+                        break;
+                    }
+                    if (reserve.ReleaseDate>=period.AccommodationDate && reserve.ReleaseDate<=period.ReleaseDate)
+                    {
+                        available = false;
+                        break;
+                    }
+                    if (reserve.AccommodationDate<=period.AccommodationDate && reserve.ReleaseDate>=period.ReleaseDate)
+                    {
+                        available = false;
+                        break;
+                    }
+
+                }
+                if (available)
+                {
+                    roomsAvailable.Add(room);
+                }
+            }
+
+            var s = Newtonsoft.Json.JsonConvert.SerializeObject(roomsAvailable);
+
+            TempData["Model"] = s;
+            return roomsAvailable != null ? RedirectToAction("Available", "Rooms") :
+                          Problem("No available rooms!");
+        }
+
     }
 }

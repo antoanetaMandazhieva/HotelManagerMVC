@@ -7,107 +7,90 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HotelManagerMVC.Data;
 using HotelManagerMVC.Data.Models;
-using Newtonsoft.Json;
-using System.Runtime.ConstrainedExecution;
 
 namespace HotelManagerMVC.Controllers
 {
-    public class RoomsController : Controller
+    public class ClientsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public RoomsController(ApplicationDbContext context)
+        public ClientsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Rooms
+        // GET: Clients
         public async Task<IActionResult> Index()
         {
-              return _context.Rooms != null ? 
-                          View(await _context.Rooms.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Rooms'  is null.");
+              return _context.Clients != null ? 
+                          View(await _context.Clients.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Clients'  is null.");
         }
 
-        // GET: Rooms/Details/5
+        // GET: Clients/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Rooms == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var room = await _context.Rooms
+            var client = await _context.Clients
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (room == null)
+            if (client == null)
             {
                 return NotFound();
             }
 
-            return View(room);
+            return View(client);
         }
 
-        // GET: Rooms/Create
+        // GET: Clients/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Rooms/Create
+        // POST: Clients/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Capacity,Type,IsTaken,AdultPrice,ChildrenPrice,Number")] Room room)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,PhoneNumber,Email,IsAdult")] Client client)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(room);
+                _context.Add(client);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(room);
-        }
-        public async Task<IActionResult> Available()
-        {
-            List<Room> model = new List<Room>();
-
-
-            if (TempData["Model"] is string s)
-            {
-                model = JsonConvert.DeserializeObject<List<Room>>(s);
-                // use newUser object now as needed
-            }
-
-            return model != null ?
-            View(model) :
-            Problem("No rooms available");
+            return View(client);
         }
 
-        // GET: Rooms/Edit/5
+        // GET: Clients/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.Rooms == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var room = await _context.Rooms.FindAsync(id);
-            if (room == null)
+            var client = await _context.Clients.FindAsync(id);
+            if (client == null)
             {
                 return NotFound();
             }
-            return View(room);
+            return View(client);
         }
 
-        // POST: Rooms/Edit/5
+        // POST: Clients/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Capacity,Type,IsTaken,AdultPrice,ChildrenPrice,Number")] Room room)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName,PhoneNumber,Email,IsAdult")] Client client)
         {
-            if (id != room.Id)
+            if (id != client.Id)
             {
                 return NotFound();
             }
@@ -116,12 +99,12 @@ namespace HotelManagerMVC.Controllers
             {
                 try
                 {
-                    _context.Update(room);
+                    _context.Update(client);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoomExists(room.Id))
+                    if (!ClientExists(client.Id))
                     {
                         return NotFound();
                     }
@@ -132,49 +115,49 @@ namespace HotelManagerMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(room);
+            return View(client);
         }
 
-        // GET: Rooms/Delete/5
+        // GET: Clients/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.Rooms == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var room = await _context.Rooms
+            var client = await _context.Clients
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (room == null)
+            if (client == null)
             {
                 return NotFound();
             }
 
-            return View(room);
+            return View(client);
         }
 
-        // POST: Rooms/Delete/5
+        // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.Rooms == null)
+            if (_context.Clients == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Rooms'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Clients'  is null.");
             }
-            var room = await _context.Rooms.FindAsync(id);
-            if (room != null)
+            var client = await _context.Clients.FindAsync(id);
+            if (client != null)
             {
-                _context.Rooms.Remove(room);
+                _context.Clients.Remove(client);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RoomExists(string id)
+        private bool ClientExists(string id)
         {
-          return (_context.Rooms?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Clients?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

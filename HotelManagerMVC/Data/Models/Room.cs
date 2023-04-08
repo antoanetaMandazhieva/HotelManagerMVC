@@ -6,6 +6,10 @@ namespace HotelManagerMVC.Data.Models
 {
     public class Room
     {
+        public Room()
+        {
+            Reservations = new List<Reservation>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
@@ -15,5 +19,6 @@ namespace HotelManagerMVC.Data.Models
         public double AdultPrice { get; set; }
         public double ChildrenPrice { get; set; }
         public int Number { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

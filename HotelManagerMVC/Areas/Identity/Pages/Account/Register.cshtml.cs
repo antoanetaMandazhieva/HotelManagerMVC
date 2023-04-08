@@ -75,6 +75,10 @@ namespace HotelManagerMVC.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Required]
+            //[DataType(DataType.Text)]
+            [Display(Name = "Username")]
+            public string Username { get; set; }
             [Required]           
             [Display(Name = "First name")]
             public string FirstName { get; set; }

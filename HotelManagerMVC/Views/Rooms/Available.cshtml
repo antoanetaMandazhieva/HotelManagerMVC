@@ -1,0 +1,66 @@
+﻿@model IEnumerable<HotelManagerMVC.Data.Models.Room>
+
+@{
+    ViewData["Title"] = "Available";
+}
+
+<h1>Available Room</h1>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Capacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsTaken)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdultPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChildrenPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Capacity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsTaken)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AdultPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChildrenPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    <form asp-controll="Reservations" asp-action="Create">
+                        <input type= "submit" value ="Reserve">
+                    </form> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -13,5 +13,6 @@ namespace HotelManagerMVC.Data.Models
         public DateTime AppointmentDate { get; set; }
         public bool? EmployeeDataIsActive { get; set; }
         public DateTime? ExemptionDate { get; set; }
+
     }
 }
