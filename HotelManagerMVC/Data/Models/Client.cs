@@ -8,6 +8,7 @@ namespace HotelManagerMVC.Data.Models
         public Client()
         {
             Reservations = new List<Reservation>();
+            Id= new Guid().ToString();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

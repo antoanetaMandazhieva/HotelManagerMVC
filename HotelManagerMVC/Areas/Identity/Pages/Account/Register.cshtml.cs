@@ -97,7 +97,7 @@ namespace HotelManagerMVC.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Appointment date")]
             public DateTime AppointmentDate { get; set; }
-            [Required]
+            //[Required]
             [Display(Name = "Employee Is Active")]
             public bool EmployeeDataIsActive { get; set; }
             //[Required]
@@ -146,9 +146,17 @@ namespace HotelManagerMVC.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                user.FirstName = Input.FirstName; user.SecondName = Input.SecondName; user.LastName = Input.LastName;
-                user.PhoneNumber = Input.PhoneNumber; user.PIN = Input.PIN; user.AppointmentDate = Input.AppointmentDate;
-                user.EmployeeDataIsActive = Input.EmployeeDataIsActive; user.ExemptionDate = Input.ExemptionDate;
+                user.FirstName = Input.FirstName; 
+                user.SecondName = Input.SecondName;
+                user.LastName = Input.LastName;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.PIN = Input.PIN; 
+                user.AppointmentDate = Input.AppointmentDate;
+                user.EmployeeDataIsActive = Input.EmployeeDataIsActive;
+                user.ExemptionDate = Input.ExemptionDate;
+                user.Email=Input.Email; 
+                user.UserName=Input.Username;
+
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

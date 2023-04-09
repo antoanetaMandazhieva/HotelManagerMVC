@@ -5,6 +5,10 @@ namespace HotelManagerMVC.Data.Models
 {
     public class Reservation
     {
+        public Reservation()
+        {
+            Id= new Guid().ToString();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }

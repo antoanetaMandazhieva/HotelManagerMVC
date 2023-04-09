@@ -4,6 +4,10 @@ namespace HotelManagerMVC.Data.Models
 {
     public class User: IdentityUser
     {
+        public User()
+        {
+            Reservations = new List<Reservation>();
+        }
         public string FirstName { get; set; }
         public string SecondName { get; set; }
         public string LastName { get; set; }
@@ -13,6 +17,7 @@ namespace HotelManagerMVC.Data.Models
         public DateTime AppointmentDate { get; set; }
         public bool? EmployeeDataIsActive { get; set; }
         public DateTime? ExemptionDate { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
 
     }
 }

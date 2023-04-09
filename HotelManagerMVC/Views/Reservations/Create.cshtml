@@ -55,4 +55,109 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+   @* <script>
+        var childPrice = Data.Models.Clients.P;
+        var adultPrice = @Model.RoomAdultPrice;
+        var allInclusicePrice =@Model.AllInclusivePrice;
+        var breakfastPrice = @Model.BreakfastPrice;
+
+        var totalPrice = @Model.RoomAdultPrice;
+
+        var isValidDate = false;
+
+        document.body.addEventListener('keydown', this.handleInteraction);
+        document.body.addEventListener('click', this.handleInteraction);
+        document.body.addEventListener('scroll', this.handleInteraction);
+
+
+        function handleInteraction() {
+            totalPrice = 0;
+            CheckClients();
+            if (document.getElementById("all-incl").checked) {
+                totalPrice += allInclusicePrice;
+            }
+            else if (document.getElementById("breakfast").checked) {
+                totalPrice += breakfastPrice;
+            }
+
+            var pr = totalPrice;
+            if (isValidDate) {
+                var days = Math.round((new Date(document.getElementById("rel-date").value) - new Date(document.getElementById("acc-date").value)) / (1000 * 60 * 60 * 24));
+                console.log("days: ",days);
+                pr = pr * days;
+            }
+            document.getElementById("price").innerHTML = pr;
+        }
+
+        function CheckClients() {
+            var total = @Model.RoomAdultPrice;
+        @{
+            var res = "";
+            if (Model.RoomCapacity - 1 <= 0)
+            {
+                res = "0";
+            }
+            else
+            {
+                res = string.Join(',', Enumerable.Range(0, Model.RoomCapacity - 1));
+            }
+        }
+            var indecies = [@Html.Raw(res)];
+            indecies.forEach(index => {
+                var areAllFilled = true;
+                var allFieldsForPerson = document.getElementsByClassName(`client-${index}`);
+                for (let node of allFieldsForPerson){
+                    if (!(node && node.value)) {
+                        areAllFilled = false;
+                        break;
+                    }
+                }
+
+                if (areAllFilled ) {
+                    if (document.getElementById(`client-${index}`).checked) {
+                        total += adultPrice;
+                    }
+                    else {
+                        total += childPrice;
+                    }
+                }
+            });
+            totalPrice = total;
+        }
+
+        var periods = @Html.Raw(Model.GetPeriods());
+
+        function CheckDates() {
+            isValidDate = false;
+            var accDate = document.getElementById("acc-date");
+            var relDate = document.getElementById("rel-date");
+            var isPresentValid = false;
+            if (new Date(accDate.value) >= new Date(relDate.value) || new Date(accDate.value) < new Date()) {
+                document.getElementById("date-inval").style = "display:block!important";
+            }
+            else {
+                document.getElementById("date-inval").style = "display:none!important";
+                isPresentValid = true;
+            }
+            if (accDate && accDate.value && relDate && relDate.value && isPresentValid) {
+                var isTaken = false;
+                periods.forEach(period => {
+                    if ((period.start >= new Date(accDate.value) && period.start <= new Date(relDate.value)) ||
+                        (period.end > new Date(accDate.value) && period.end <= new Date(relDate.value)) ||
+                        (period.end >= new Date(relDate.value) && period.start <= new Date(accDate.value) )||
+                        (period.end <= new Date(relDate.value) && period.start >= new Date(accDate.value))){
+                        isTaken = true;
+                    }
+                });
+                if (isTaken) {
+                    document.getElementById("date-error").style = "display:block!important";
+                }
+                else {
+                    document.getElementById("date-error").style = "display:none!important";
+                    isValidDate = true;
+                }
+            }
+        }*@
+
+    @*@*</script>*@
 }
