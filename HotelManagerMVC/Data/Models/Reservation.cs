@@ -7,13 +7,13 @@ namespace HotelManagerMVC.Data.Models
     {
         public Reservation()
         {
-            Id= new Guid().ToString();
+            Id= Guid.NewGuid().ToString();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         [Required]
-        public int RoomId { get; set; }
+       public int RoomId { get; set; }
         public List<Client> Clients { get; set; }
         public DateTime AccommodationDate { get; set; }
         public DateTime ReleaseDate { get; set; }

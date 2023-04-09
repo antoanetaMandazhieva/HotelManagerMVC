@@ -9,7 +9,7 @@ namespace HotelManagerMVC.Data.Models
         public Room()
         {
             Reservations = new List<Reservation>();
-            Id= new Guid().ToString();
+            Id = Guid.NewGuid().ToString();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
